@@ -62,32 +62,6 @@ window.showConfirm = function(msg, yes, no){
     weui.confirm(msg, yes, no);
 }
 
-window.shareUrl = "";
-window.shareImg = "";
-if(location.href.indexOf("beta")>=0){
-    shareUrl = "https://beta.ia.qq.com/641013123/"
-
-}
-else{
-    shareUrl = "https://amway2019.ia.qq.com/"
-}
-window.shareImg = shareUrl + require('../sources/share.jpg')
-
-window.handleErr = function(data){
-    if(data.code == 0){
-        return true;
-    }
-    else{
-        if(data.code == 101){
-            showAlert(data.message, function(){
-                AMWAY.appLogin();
-            });
-        }
-        else {
-            showAlert(data.message);
-        }
-    }
-}
 window.playFrame = function(prefix, min, max, target, interval,infinite,callback){
     var currentFrame = 0
     if(!interval){
@@ -105,6 +79,7 @@ window.playFrame = function(prefix, min, max, target, interval,infinite,callback
         if(currentFrame>max)currentFrame = 0;
     }, interval);
 }
+
 window.playFrameCss = function(prefix, min, max, target, interval){
     var currentFrame = 0
     if(!interval){
@@ -241,12 +216,6 @@ window.isweixin = function () {
     return isnews;
 };
 window.onload = function(){
-    if(location.href.indexOf("ia")>=0) {
-        $("body").append($("<script>").attr("src", "//appmedia.gtimg.com/media/631007208/appin/h5e.2.1.1.js")
-            .attr("id", "h5e-node").attr("arg", window.h5eArg)
-        );
-    }
-    $("body").append($("<script>").attr("src", "js/project.js"));
     setTimeout(function(){
         reset();
         resetMask(true);
@@ -257,7 +226,7 @@ window.onload = function(){
         $("body").append($("<script>").attr("src", "//mat1.gtimg.com/www/js/newsapp/jsapi/news.js"));
         var tencentIntev = setInterval(function(){
             if(window.TencentNews){
-                window.TencentNews.setTitle("那些刷屏的营养谣言");
+                window.TencentNews.setTitle("");
                 clearInterval(tencentIntev)
             }
         }, 100)
@@ -265,8 +234,6 @@ window.onload = function(){
 
     var interval = setInterval(function(){
         if(typeof h5e != 'undefined') {
-            AMWAY.initShare(window.shareUrl, "99%的网友栽在了这里。", "这些专坑中国人的“健康建议”，你能识别吗？", "这些专坑中国人的“健康建议”，你能识别吗？"
-                , window.shareImg);
             clearInterval(interval);
         }
     }, 100);
@@ -281,16 +248,12 @@ $("document").ready(function(){
         sounds.whenLoaded = function(){
             window.soundsloaded = true;
         };
-        sounds.load([
-            require('../sources/a.mp3'),
-            require('../sources/b.mp3'),
-            require('../sources/music.mp3')
-        ])
+        // sounds.load([
+        // ])
 
-        window.sounds.a = sounds[require('../sources/a.mp3')];
-        window.sounds.b = sounds[require('../sources/b.mp3')];
-        window.sounds.music = sounds[require('../sources/music.mp3')];
-        window.sounds.music.loop = true;
+        // window.sounds.a = sounds[require('../sources/a.mp3')];
+        
+        // window.sounds.music.loop = true;
     }
     window.playSound = function(id){
         if (typeof WeixinJSBridge != 'undefined' && WeixinJSBridge != null) {
@@ -312,25 +275,7 @@ $("document").ready(function(){
     $("#page").on("touchmove", function(evt){
         evt.preventDefault();
     })
-    $("body").append($(` <audio id="music" loop preload="auto">
-        <source src="${require('../sources/music.mp3')}" type="audio/mpeg"/>
-    </audio>`).css({position:'absolute', top: -10000}))
-        .append($(` <audio id="a" preload="auto">
-        <source src="${require('../sources/a.mp3')}" type="audio/mpeg"/>
-    </audio>`).css({position:'absolute', top: -10000})).append($(` <audio id="b" preload="auto">
-        <source src="${require('../sources/b.mp3')}" type="audio/mpeg"/>
-    </audio>`).css({position:'absolute', top: -10000}))
-    // var loadingQueue = new createjs.LoadQueue()
-    // loadingQueue.installPlugin(createjs.Sound);
-    // createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
-    // loadingQueue.loadFile({
-    //     id: "a",
-    //     src: require('../sources/a.mp3')
-    // });
-    // loadingQueue.loadFile({
-    //     id: "b",
-    //     src: require('../sources/b.mp3')
-    // });
+    
     reset();
     var targetLength_1 = window.innerWidth;
     var targetLength_2 = window.innerHeight;
@@ -353,6 +298,7 @@ $("document").ready(function(){
         var scale = window.stageWidth/750;
         return width * scale;
     };
+
     if(!isAndroid&&!isiOS){
         window.stageHeight = window.innerHeight;
         window.stageWidth = window.innerHeight*750/1334;
@@ -382,9 +328,8 @@ $("document").ready(function(){
         $("#musicbtn").on("click", function(){
             window.playing = !window.playing;
             if(playing){
-                $(this).attr("src", require('../sources/musicon.png'));
-                // sounds[require('../sources/music.mp3')].loop = true;
-                // sounds[require('../sources/music.mp3')].play();
+                // $(this).attr("src", require('../sources/musicon.png'));
+
                 if(ie) {
                     music.play();
                 }
@@ -394,9 +339,8 @@ $("document").ready(function(){
 
             }
             else{
-                $(this).attr("src", require('../sources/musicoff.png'));
-                // sounds[require('../sources/music.mp3')].pause();
-                // sounds[require('../sources/a.mp3')].pause();
+                // $(this).attr("src", require('../sources/musicoff.png'));
+
                 if(ie) {
                     music.pause();
                     a.pause();
@@ -412,8 +356,6 @@ $("document").ready(function(){
                 if(!re) {
                     setTimeout(function () {
                         pageService.start();
-                        // $(".coverleft").addClass("slideOutLeft animated fast")
-                        // $(".coverright").addClass("slideOutRight animated fast")
                         $("#loading").remove();
                     }, 1000)
                 }
@@ -458,37 +400,7 @@ font-size: 28px;
 </style>`))
     }
 
-
-    // window.offset = function(l1, l2, l3){
-    //     if(window.innerHeight<1200){
-    //         return l1;
-    //     }
-    //     if(window.innerHeight<1400){
-    //         return l2;
-    //     }
-    //     if(window.innerHeight>1400){
-    //         return l3;
-    //     }
-    // }
-    // MtaH5.clickStat("exceptionlogs");
 });
-// window.onresize = function () {
-//     // if(window.orientation==0)return;
-//     // resetMask(true);
-//     // console.log("resize")
-// }
-window.addEventListener('pageshow', function () {
-    if(window.currentPage == "page1") {
-        setTimeout(function () {
-            resetMask(true);
-            window.App.positional.drawElements(".cal")
-            window.pages.Page1.load();
-        }, 200)
-    }
 
-})
-// $('body').on('touchend',function(e) {
-//     e.preventDefault();
-// })
 document.addEventListener('dblclick', function (e) { e.preventDefault();
 });
