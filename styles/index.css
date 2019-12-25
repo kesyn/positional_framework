@@ -9,14 +9,8 @@
  *
  * Released on: December 19, 2018
  */
-@font-face{
-    src: url("../sources/polaris.ttf");
-    font-family: 'numberfont';
-}
-.number {
-    font-family: numberfont;
-}
-*{
+
+ *{
     font-family: "Helvetica Neue"
 }
 @-ms-viewport {
@@ -343,7 +337,6 @@ video {
     background-color: black;
 }
 .bk{
-    /* background-image: url('../sources/bk.gif'); */
     background-repeat: repeat;
 }
 .slide-item img {
@@ -386,85 +379,7 @@ video {
 
 
 
-#question{
-    background-image: url(../sources/questions.png);
-}
-#player{
-    background-image: url(../sources/player.png);
-}
-.answer{
-    background-image: url(../sources/answers.png);
-}
-.cityback{
-    background-image: url('../sources/bk3.png');
-    background-size: auto 100%;
-    position: absolute;
-    top:0;
-    left:0;
-    background-repeat: repeat-x;
-    background-position: 50%;
-}
-.cityback2{
-    background-image: url('../sources/bk2.png');
-    background-size: auto 100%;
-    position: absolute;
-    top:0;
-    left:0;
-    background-repeat: repeat-x;
-    background-position: 50%;
-}
-.cityback3{
-    background-image: url('../sources/bk1.png');
-    background-size: auto 100%;
-    position: absolute;
-    top:0;
-    left:0;
-    background-repeat: repeat-x;
-    background-position: 50%;
-}
-.cityback4{
-    background-image: url('../sources/shuibo.png');
-    background-size: auto 100%;
-    position: absolute;
-    top:0;
-    left:0;
-    background-repeat: repeat-x;
-    background-position: 50%;
-}
-#spot {
-    background-image: url(../sources/spot.png);
-    background-repeat: repeat-x;
-}
-#tips {
-    background-image: url(../sources/tips.png);
-    background-repeat: no-repeat;
-}
-#roles {
-    background-image: url(../sources/roles.png);
-    background-repeat: no-repeat;
-}
-#failskip{
-    /*display: flex;*/
-    /*flex-direction: row;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    /*text-align: center;*/
-    /*vertical-align: middle;*/
-    /*display: block;*/
-}
-#failskip div{
-    /*display: inline-block;*/
-    /*height: 100%;*/
-    /*vertical-align: middle;*/
 
-}
-#failskip{
-    color: white;
-}
-.posterborder{
-    border: solid;
-    box-sizing: border-box;
-}
 #uploadfile{
     opaicty: 0!important;
 }
@@ -477,34 +392,7 @@ body{
 *{
     -webkit-overflow-scrolling: touch;
 }
-#balls {
-    background-image: url("../sources/balls.png");
-}
-#loading {
-    background-image: url("../sources/loading.gif")!important;
-    background-size: 30% auto!important;
-    background-position: center center!important;
-    background-repeat: no-repeat!important;
-    position: absolute;
-    z-index: 10000000;
-}
-#cover{
-    position: fixed;
-    background-image: url("../sources/cover.png");
-    background-size: auto 15%!important;
-    background-position: center center!important;
-    background-repeat: no-repeat!important;
-    z-index: 10000000;
-    top: 0;
-    left: 0;
-    width: 100%;height:100%;
-    background-color:#d0efee;
-    display: none;
-}
-#percent{
-    /*color: #044d42!important;*/
-    /*-webkit-text-stroke: 2px #9fd5e3;*/
-}
+
 input[type="file"]{
     opacity: 0!important;
 }
