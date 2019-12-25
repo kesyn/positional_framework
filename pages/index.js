@@ -1,0 +1,4 @@
+window.pages = {
+};
+export default {
+}
