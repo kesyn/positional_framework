@@ -137,7 +137,6 @@ var resetMask = (needResize) => {
     }
     if(lastW!=window.innerWidth||needResize){
         var targetLength_1 = window.innerWidth;
-
         var targetLength_2 = window.innerHeight;
         // alert("innerWidth:"+window.innerWidth+",innerHeight:"+window.innerHeight+",scale:"+window.devicePixelRatio);
         if(window.allowRotate){
