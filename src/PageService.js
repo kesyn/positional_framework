@@ -23,7 +23,8 @@ export default class {
         }
         var last = self.currentPage;
         // $("#page").append($html[0].outerHTML);
-        $($html[0].outerHTML).insertBefore("#musicbtn")
+        // $($html[0].outerHTML).insertBefore("#musicbtn")
+        $("#page").append($html[0].outerHTML)
         $("#" + page.id).hide();
         $("#" + last).remove();
         $("#" + page.id).fadeIn(200, function(){
@@ -36,12 +37,9 @@ export default class {
     }
     start(page){
         if(!page){
-            var re = window.App.tools.getQueryStr("re");
             var tp = window.App.tools.getQueryStr("tp");
             page = this.pages.Page1;
-            if(re){
-                page = this.pages.Page2;
-            }
+            
             if(tp){
                 page = window.pages[tp];
             }
@@ -60,7 +58,8 @@ export default class {
                 }
             }
 
-            $($html[0].outerHTML).insertBefore("#musicbtn")
+            // $($html[0].outerHTML).insertBefore("#musicbtn")
+            $("#page").append($html[0].outerHTML)
             this.currentPage = page.id;
         }
         window.App.positional.drawElements(".cal");

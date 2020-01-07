@@ -105,17 +105,17 @@ window.os =(u.indexOf('Android') > -1 || u.indexOf('Linux') > -1)?"android":"ios
 var reset = ()=>{
     
     // return;
-    if(window.os=="ios")return document.getElementsByName('viewport')[0].setAttribute('content', 'width=750, user-scalable=no');
-    var get_target_densitydpi = 750 / document.documentElement.clientWidth * 160;
-    if (get_target_densitydpi < 70)
-        get_target_densitydpi = 70;
-    var targetDensitydpi = 'target-densitydpi=' + get_target_densitydpi + ', width=750, user-scalable=no';
-    try {
-        document.getElementsByName('viewport')[0].setAttribute('content', targetDensitydpi);
-    }
-    catch{
-
-    }
+    // if(window.os=="ios")return document.getElementsByName('viewport')[0].setAttribute('content', 'width=750, user-scalable=no');
+    // var get_target_densitydpi = 750 / document.documentElement.clientWidth * 160;
+    // if (get_target_densitydpi < 70)
+    //     get_target_densitydpi = 70;
+    // var targetDensitydpi = 'target-densitydpi=' + get_target_densitydpi + ', width=750, user-scalable=no';
+    // try {
+    //     document.getElementsByName('viewport')[0].setAttribute('content', targetDensitydpi);
+    // }
+    // catch{
+    //
+    // }
     // $(".fixed_back").css("position", "fixed").width(window.innerWidth).height(window.innerHeight);
 }
 reset();
@@ -239,21 +239,9 @@ window.onload = function(){
 };
 $("document").ready(function(){
     window.soundsloaded = false;
-    var re = window.App.tools.getQueryStr("re");
-    if(!re) {
-        $("#loading").show();
-    }
-    if(!ie) {
-        sounds.whenLoaded = function(){
-            window.soundsloaded = true;
-        };
-        // sounds.load([
-        // ])
+    // $("#loading").show();
 
-        // window.sounds.a = sounds[require('../sources/a.mp3')];
-        
-        // window.sounds.music.loop = true;
-    }
+
     window.playSound = function(id){
         if (typeof WeixinJSBridge != 'undefined' && WeixinJSBridge != null) {
             WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
@@ -307,9 +295,7 @@ $("document").ready(function(){
     $("#loading").css({left: window.innerWidth/2 - window.stageWidth/2})
 
     var positional = new Positional(Files);
-    if(!re) {
-        $(".loadingitem").show();
-    }
+
     positional.drawElements(".cal");
     positional.fullScreen("#page")
     window.App.positional = positional;
@@ -317,10 +303,8 @@ $("document").ready(function(){
     var pageService = new PageService(Pages);
     window.App.pageService = pageService;
     var loader = new Loader(Files);
-    
-    loader.start(function(){
 
-        var a = $("#a")[0];
+    var loadDone = function(){var a = $("#a")[0];
         var music = $("#music")[0];
         var b = $("#b")[0];
 
@@ -350,54 +334,55 @@ $("document").ready(function(){
                 }
             }
         })
+        window.soundsloaded = true;
         var soundsInterval = setInterval(function(){
-            if(window.soundsloaded||ie){
-                if(!re) {
-                    setTimeout(function () {
-                        pageService.start();
-                        $("#loading").remove();
-                    }, 1000)
-                }
-                else{
-                    pageService.start();
-                    $("#loading").remove();
-                }
+            if(window.soundsloaded){
+
+                pageService.start();
+                $("#loading").remove();
+
                 clearInterval(soundsInterval);
             }
-        }, 10)
+        }, 10)}
+    if(Object.keys(Files)>0) {
+        loader.start(function () {
+            loadDone();
+        }, function (progress) {
+            $("#loadingText").text(~~(progress * 100) + "%");
 
-    },function (progress){
-        $("#loadingText").text(~~(progress * 100) + "%");
-        
-    })
-    if(isAndroid||isiOS){
-        $("body").append($(`<style>
-.weui-dialog{
-    width:600px;
-    border-radius: 6px;
-}
-
-.weui-dialog__bd{
-    font-size: 30px!important;
-    padding: 2.7em 40px 1.7em!important;
-}
-.weui-dialog__ft{
-    line-height: 96px!important;
-    font-size: 36px!important;
-}
-.weui-mask_transparent{
-    background-color: rgba(0,0,0,0.5)
-}
-.weui-toast {
-    width: 240px;
-    height: 240px;
-    top: 50%;
-}
-.weui-toast__content{
-font-size: 28px;
-}
-</style>`))
+        })
     }
+    else{
+        loadDone();
+    }
+//     if(isAndroid||isiOS){
+//         $("body").append($(`<style>
+// .weui-dialog{
+//     width:600px;
+//     border-radius: 6px;
+// }
+//
+// .weui-dialog__bd{
+//     font-size: 30px!important;
+//     padding: 2.7em 40px 1.7em!important;
+// }
+// .weui-dialog__ft{
+//     line-height: 96px!important;
+//     font-size: 36px!important;
+// }
+// .weui-mask_transparent{
+//     background-color: rgba(0,0,0,0.5)
+// }
+// .weui-toast {
+//     width: 240px;
+//     height: 240px;
+//     top: 50%;
+// }
+// .weui-toast__content{
+// font-size: 28px;
+// }
+// </style>`))
+//     }
 
 });
 
