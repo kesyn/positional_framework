@@ -54,6 +54,13 @@ export default class {
     }
     drawElement(element, containerSize){
         var scale = window.stageWidth/750;
+        var style = $(element).attr("_style");
+        if(style){
+
+            style = eval("(" + style + ")");
+            $(element).css(style);
+            $(element).removeAttr("_style");
+        }
         var evalWithContainer = function(value){
             try {
                 if (containerSize) {
@@ -225,6 +232,18 @@ export default class {
         if(offset.fontSize){
             $(element).css("font-size", (offset.fontSize*scale)+"px")
             $(element).css("line-height", offset.height + "px")
+        }
+        if(offset.height){
+            offset.height = Math.ceil(offset.height);
+        }
+        if(offset.width){
+            offset.width = Math.ceil(offset.width);
+        }
+        if(offset.height<=0){
+            offset.height = "auto"
+        }
+        if(offset.width<=0){
+            offset.height = "auto"
         }
         if(!offset.skip) {
             // alert("not skip")
