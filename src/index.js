@@ -302,6 +302,7 @@ $("document").ready(function(){
 
     var pageService = new PageService(Pages);
     window.App.pageService = pageService;
+    console.log(Files)
     var loader = new Loader(Files);
 
     var loadDone = function(){var a = $("#a")[0];
@@ -344,7 +345,7 @@ $("document").ready(function(){
                 clearInterval(soundsInterval);
             }
         }, 10)}
-    if(Object.keys(Files)>0) {
+    if(Object.keys(Files).length>0) {
         loader.start(function () {
             loadDone();
         }, function (progress) {
