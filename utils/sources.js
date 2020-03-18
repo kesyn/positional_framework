@@ -2,9 +2,8 @@ var fs = require('fs');
 var sizeOf = require('image-size');
 var glob = require('glob');
 var pages = require('../pages.json');
-
+var tobeChanged = {};
 var files = [];
-
 for(var page of pages){
     var imgs = page.images;
     var docWidth = page.width;
@@ -28,6 +27,17 @@ for(var page of pages){
             if(img.right){
                 img.x = layerInfo.right - 750;
             }
+            delete img.re;
+            tobeChanged["." + img.id] = {
+                x: img.x,
+                y: img.y,
+                width: img.width,
+                height: img.height,
+                cx: img.cx,
+                cy: img.cy,
+                bottom: img.bottom,
+                right: img.right
+            }
         }
         files.push({
             name: 'sources/' + img.pageName + "/" + img.id + ".png",
@@ -42,6 +52,7 @@ for(var page of pages){
         })
     }
 }
+fs.writeFileSync('pages.json', JSON.stringify(pages, null, 4), 'utf8')
 for(var file of glob.sync("sources/*")){
     if(file.indexOf("png")>=0||file.indexOf("jpg")>=0||file.indexOf("gif")>=0){
         var size = sizeOf(file);
@@ -91,3 +102,58 @@ for(var i=0;i<keys.length;i++){
 export default files;
 `;
 fs.writeFileSync("src/files.js", js, 'utf8')
+
+
+var lines = fs.readFileSync('src/files.js', 'utf8');
+const cheerio = require('cheerio')
+
+lines = lines.replace(/import /g, "var ").replace(/ from /g, " = ");
+lines = lines.replace("export default files;", "");
+eval(lines);
+var window = {
+    stageWidth: "window.stageWidth",
+    stageHeight: "window.stageHeight"
+}
+
+
+for(var f of glob.sync("pages/*.html")){
+    const $ = cheerio.load(fs.readFileSync(f, 'utf8'), {
+        decodeEntities: false
+    });
+    var changed = false;
+    for(var className in tobeChanged){
+        var json = JSON.stringify(tobeChanged[className]).replace(/"/g, "");
+        console.log(className)
+        $(className).attr("position", json);
+        changed = true;
+    }
+    // var imgs = $("img.cal");
+    // for(var i = 0; i<imgs.length; i++){
+    //     var img = imgs.eq(i);
+    //     var src = img.attr("src");
+    //     var position = img.attr("position");
+    //
+    //     var file = {...files[src]};
+    //     if(position) {
+    //         position = position.replace(/\*/g, "+'*'+").replace(/\//g, "+'/'+");
+    //         for(var key in file){
+    //             if(typeof file[key] == "undefined"){
+    //                 delete file[key];
+    //             }
+    //             if(file[key] == null){
+    //                 delete file[key];
+    //             }
+    //         }
+    //     }
+    //     delete file.file
+    //     var json = JSON.stringify(file).replace(/"/g, "");
+    //     console.log(json);
+    //     img.attr("position", json);
+    // }
+    if(changed) {
+        var html = ($("body").html());
+        console.log(f)
+        fs.writeFileSync(f, html, 'utf8')
+    }
+}
+

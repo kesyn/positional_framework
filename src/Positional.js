@@ -61,11 +61,16 @@ export default class {
             $(element).css(style);
             $(element).removeAttr("_style");
         }
+        if($(element).attr("position")==null){
+            return;
+        }
         var evalWithContainer = function(value){
             try {
                 if (containerSize) {
-                    value = value.replace(/window\.innerWidth/g, "containerSize.width").replace(/window\.innerHeight/g, "containerSize.height")
-                        .replace(/window\.stageWidth/g, "containerSize.width").replace(/window\.stageHeight/g, "containerSize.height")
+                    if(typeof value == "string") {
+                        value = value.replace(/window\.innerWidth/g, "containerSize.width").replace(/window\.innerHeight/g, "containerSize.height")
+                            .replace(/window\.stageWidth/g, "containerSize.width").replace(/window\.stageHeight/g, "containerSize.height")
+                    }
                 }
                 var result = eval(value);
                 return result;
@@ -213,8 +218,10 @@ export default class {
             // left = designSize.width/2-offset.width/2+left;
             top = designSize.height/2-offset.height/2+top;
         }
+        var bottom = 0;
         if(offset.bottom){
             top = designSize.height - offset.height + top;
+            bottom = designSize.height-top-offset.height
             // console.log("t " + top);
         }
         if(offset.right){
@@ -249,10 +256,18 @@ export default class {
             // alert("not skip")
             // console.log(src);
             // console.log(offset);
-            $(element).width(offset.width).height(offset.height).css("position", "absolute").css("opacity", opacity).css({
-                left: offset.x,
-                top: offset.y
-            });
+            if(offset.bottom) {
+                $(element).width(offset.width).height(offset.height).css("position", "absolute").css("opacity", opacity).css({
+                    left: offset.x,
+                    bottom: bottom
+                });
+            }
+            else{
+                $(element).width(offset.width).height(offset.height).css("position", "absolute").css("opacity", opacity).css({
+                    left: offset.x,
+                    top: offset.y
+                });
+            }
         }
         else{
             // alert("skip")
