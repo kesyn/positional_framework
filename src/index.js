@@ -294,7 +294,7 @@ $("document").ready(function(){
     $("#page").css({left: window.innerWidth/2 - window.stageWidth/2})
     $("#loading").css({left: window.innerWidth/2 - window.stageWidth/2})
 
-    var positional = new Positional(Files);
+    var positional = new Positional();
 
     positional.drawElements(".cal");
     positional.fullScreen("#page")
@@ -302,7 +302,6 @@ $("document").ready(function(){
 
     var pageService = new PageService(Pages);
     window.App.pageService = pageService;
-    console.log(Files)
     var loader = new Loader(Files);
 
     var loadDone = function(){var a = $("#a")[0];

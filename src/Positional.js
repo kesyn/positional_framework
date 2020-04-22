@@ -32,8 +32,7 @@ window.offset = function(l1, l2, l3, l4){
     }
 }
 export default class {
-    constructor(files){
-        this.files = files;
+    constructor(){
     }
 
     fullScreen(query){

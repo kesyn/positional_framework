@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --mode development",
-    "clear": "rm -rf pages/* && touch pages/.gitkeep && rm -rf sources/* && touch sources/.gitkeep && rm -rf pages.json && rm -rf src/files.js", 
+    "clear": "rm -rf pages/* && touch pages/.gitkeep && rm -rf sources/* && touch sources/.gitkeep && rm -rf pages.json",
     "gen": "h5 parse && h5 codes"
   },
   "dependencies": {
