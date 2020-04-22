@@ -513,3 +513,6 @@ img,div,span {
     -webkit-animation-name: fadeROut4;
     -webkit-animation-timing-function: linear;
 }
+.noclickable{
+    pointer-events: none;
+}

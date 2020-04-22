@@ -1,4 +1,0 @@
-window.pages = {
-};
-export default {
-}

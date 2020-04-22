@@ -53,6 +53,12 @@ export default class {
         }
     }
     drawElement(element, containerSize){
+        var limitSize = {
+            width: $(".limit").width(),
+            height: $(".limit").height(),
+            top: $(".limit").offset().top,
+            left: $(".limit").offset().left
+        }
         var scale = window.stageWidth/750;
         var style = $(element).attr("_style");
         if(style){
@@ -102,78 +108,31 @@ export default class {
         }
 
         var src = $(element).attr("src");
-        var file = null;
-        if(src){
-            if(src.indexOf("blob") == 0){
-                src = window.blobDict[src];
-            }
-            file = this.files[src];
-        }
-        // console.log(file)
+
         var offset = {
-            // cx: $(element).attr("cx"),
-            // cy: $(element).attr("cy"),
-            // bottom: $(element).attr("bottom"),
-            // right: $(element).attr("right"),
-            // x: $(element).attr("x") ? evalWithContainer($(element).attr("x")) : 0,
-            // y: $(element).attr("y") ? evalWithContainer($(element).attr("y")) : 0,
-            // cx: file&&file.cx,
-            // cy: file&&file.cy,
-            // bottom: file&&file.cy,
-            // right: file&&file.right,
-            // x: file&&file.x,
-            // y: file&&file.y,
-            fontSize: $(element).attr("fontSize"),
-            color: $(element).attr("color"),
-            alpha: $(element).attr("alpha"),
-            skip: $(element).attr("skipCal"),
-            scale: $(element).attr("scale")
         };
 
-        if(file){
-            offset.cx = file.cx;
-            offset.cy = file.cy;
-            offset.x = file.x;
-            offset.y = file.y;
-            offset.bottom = file.bottom;
-            offset.right = file.right;
-        }
-
-
-
-        if($(element).attr("cx")!=null){
-            offset.cx = evalWithContainer($(element).attr("cx"))
-        }
-        if($(element).attr("cy")!=null){
-            offset.cy = evalWithContainer($(element).attr("cy"))
-        }
-        if($(element).attr("bottom")!=null){
-            offset.bottom = evalWithContainer($(element).attr("bottom"))
-        }
-        if($(element).attr("right")!=null){
-            offset.right = evalWithContainer($(element).attr("right"))
-        }
-        if($(element).attr("x")!=null){
-            offset.x = evalWithContainer($(element).attr("x"))
-        }
-        if($(element).attr("y")!=null){
-            offset.y = evalWithContainer($(element).attr("y"))
-        }
-        if(file){
-            offset.width = evalWithContainer(file.width);
-            offset.height = evalWithContainer(file.height);
-        }
-        if($(element).attr("w")){
-            offset.width = evalWithContainer($(element).attr("w"));
-            // console.log(eval($(element).attr("w")), eval($(element).attr("h")))
-        }
-        if($(element).attr("h")){
-            offset.height = evalWithContainer($(element).attr("h"))
-            // console.log(eval($(element).attr("w")), eval($(element).attr("h")))
-        }
+        var out = true;
         if($(element).attr("position")!=null){
-            offset = {...offset, ...evalWithContainer("(" + $(element).attr("position") + ")")};
-
+            var positionStr = $(element).attr("position");
+            var tmpStr = positionStr
+            .replace(/window\.fullWidth/g, "window.stageWidth/window.stageScale")
+            .replace(/window\.fullHeight/g, "window.stageHeight/window.stageScale")
+            .replace(/fullWidth/g, "window.stageWidth/window.stageScale")
+            .replace(/fullHeight/g, "window.stageHeight/window.stageScale");
+            
+            if(!eval('(' + tmpStr + ')').out){
+                positionStr = positionStr.replace(/fullWidth/g, limitSize.width).replace(/fullHeight/g, limitSize.height)
+                .replace(/window\.fullWidth/g, limitSize.width).replace(/window\.fullHeight/g, limitSize.height)
+                out = false;
+            }
+            positionStr = positionStr
+                .replace(/window\.fullWidth/g, "window.stageWidth/window.stageScale")
+                .replace(/window\.fullHeight/g, "window.stageHeight/window.stageScale")
+                .replace(/fullWidth/g, "window.stageWidth/window.stageScale")
+                .replace(/fullHeight/g, "window.stageHeight/window.stageScale")
+            
+            offset = {...offset, ...evalWithContainer("(" + positionStr + ")")};
         }
         if(offset.scale){
             offset.scale = evalWithContainer(offset.scale)
@@ -186,6 +145,9 @@ export default class {
         // console.log(!!$(element).attr("bottom"));
 
         var designSize = {width: window.stageWidth, height: window.stageHeight}
+        if(!out){
+            designSize = limitSize;
+        }
         if(containerSize){designSize = containerSize;}
         // console.log(scale)
         
@@ -251,6 +213,16 @@ export default class {
         }
         if(offset.width<=0){
             offset.height = "auto"
+        }
+        if(offset.stretch){
+            console.log(offset.design);
+            offset.height = designSize.height - offset.design[2]*scale - (offset.design[4]*scale - offset.design[3]*scale);
+        }
+        if(!out){ 
+            offset.y += limitSize.top;
+            if(offset.bottom){
+                bottom = bottom + (window.stageHeight - limitSize.top - limitSize.height)
+            }
         }
         if(!offset.skip) {
             // alert("not skip")

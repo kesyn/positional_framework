@@ -101,7 +101,7 @@ for(var i=0;i<keys.length;i++){
 }
 export default files;
 `;
-fs.writeFileSync("src/files.js", js, 'utf8')
+// fs.writeFileSync("src/files.js", js, 'utf8')
 
 
 var lines = fs.readFileSync('src/files.js', 'utf8');
