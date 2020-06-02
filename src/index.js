@@ -40,7 +40,7 @@ if(navigator.appName.indexOf("Internet Explorer")!=-1){     //yeah, he's using I
 }
 import Positional from './Positional';
 import PageService from './PageService';
-import Animator from './Animator';
+import Animator from './AnimatorV2';
 import Tools from './Tools'
 import Loader from './Loader';
 import '../styles/index.css';

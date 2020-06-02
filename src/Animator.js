@@ -194,6 +194,7 @@ export default class Animator{
         }
         currentIntervals.push(setInterval(this.waitQueue, 50));
     }
+
     handleAnimation(dom){
         if(navigator.appName.indexOf("Internet Explorer")!=-1){     //yeah, he's using IE
             if(navigator.appVersion.indexOf("MSIE 9")>=0){
