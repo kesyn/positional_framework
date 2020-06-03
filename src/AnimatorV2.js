@@ -7,6 +7,7 @@
 var queue = [];
 var currentIntervals = [];
 var animations = {};
+var animationObjs = {};
 var styles = {};
 export default class Animator{
     constructor(app){
@@ -18,6 +19,7 @@ export default class Animator{
         animations[page] = {
 
         }
+        animationObjs[page] = {}
         var a = animations[page];
         var children = $(page).find("*");
         var styleStr = "";
@@ -26,9 +28,25 @@ export default class Animator{
             if(!child.attr("ani")){
                 continue;
             }
+            var targetId = child.attr("id");
+            if(targetId){
+                animationObjs[page][targetId] = {};
+            }
             var childAnis = {}
             var anis = eval(`(${child.attr("ani")})`) ;
             for(var [index, animation] of anis.entries()){
+                if(targetId&&animation.t){
+                    if(!animationObjs[page][targetId]){
+                        animationObjs[page][targetId] = {};
+                    }
+                    if(!animationObjs[page][targetId][animation.c])
+                    {
+                        animationObjs[page][targetId][animation.c] = {};
+                    }
+                    if(!animationObjs[page][targetId][animation.c][animation.t]){
+                        animationObjs[page][targetId][animation.c][animation.t] = animation;
+                    }
+                }
                 if(!a[animation.c]){
                     a[animation.c] = [];
                 }
@@ -41,6 +59,24 @@ export default class Animator{
                     if(animation.from && animation.to){
                         var animationName = `${child.attr("id")}_${animation.c}_${index}`;
                         animation.t = animationName;
+                        if(targetId){
+                            // animationObjs[page][targetId] = {...animationObjs[page][targetId],
+                            //     [animation.c]:{
+                            //         ...animationObjs[page][targetId][animation.c],
+                            //         [animationName]: animation
+                            //     }
+                            // };
+                            if(!animationObjs[page][targetId]){
+                                animationObjs[page][targetId] = {};
+                            }
+                            if(!animationObjs[page][targetId][animation.c])
+                            {
+                                animationObjs[page][targetId][animation.c] = {};
+                            }
+                            if(!animationObjs[page][targetId][animation.c][animationName]){
+                                animationObjs[page][targetId][animation.c][animationName] = animation;
+                            }
+                        }
                         if(!styles[animationName]){
                             styles[animationName] = true;
                             const convertPx = (num)=>{
@@ -102,7 +138,24 @@ export default class Animator{
             if(!className){
                 continue;
             }
-            child.hide().removeClass(child.attr("data-ani")).addClass(className).show();
+            ((_child, p, c, cn)=> {
+                _child.hide().removeClass(child.attr("data-ani")).addClass(cn).show().one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd onanimationend animationend", function (ev) {
+                    // console.log(ev.originalEvent)
+                    var id = _child.attr("id");
+                    if(id){
+                        var animation = animationObjs[p][id][c][ev.originalEvent.animationName];
+                        console.log(animation);
+                        if(animation.endCommand){
+                            switch(animation.endCommand){
+                                case "remove": _child.remove();
+                            }
+                        }
+                        if(window.animationDone){
+                            window.animationDone(animation);
+                        }
+                    }
+                });
+            })(child, page, cate, className)
         }
     }
 
