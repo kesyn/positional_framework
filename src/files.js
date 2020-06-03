@@ -20,7 +20,9 @@ for(const key in Pages){
     const imgs = $(page.Html).find("img");
     for(let i=0;i<imgs.length;i++){
         const img = $(imgs[i]).attr("src");
-        populate(img);
+        if(img) {
+            populate(img);
+        }
     }
 
     for(const file of page.files){

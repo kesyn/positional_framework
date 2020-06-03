@@ -15,6 +15,7 @@ export default class {
         for(var i=0;i<$imgs.length;i++){
             var src = $imgs.eq(i).attr("src");
             if(src.length>2&&src.indexOf("data")!=0){
+                if(!src)continue;
                 // console.log(src)
                 var newSrc = window.loader.get(src).getAttribute("src");
                 $imgs.eq(i).attr("src", newSrc);
@@ -22,6 +23,7 @@ export default class {
             }
         }
         var last = self.currentPage;
+        ko.cleanNode($("#"+last)[0]);
         // $("#page").append($html[0].outerHTML);
         // $($html[0].outerHTML).insertBefore("#musicbtn")
         $("#page").append($html[0].outerHTML)
@@ -31,7 +33,9 @@ export default class {
 
         })
         window.App.positional.drawElements(".cal");
-        page.load();
+        var data = new page.data();
+        ko.applyBindings(data, $("#" + page.id)[0]);
+        page.load(data);
 
         this.currentPage = page.id;
     }
@@ -39,7 +43,7 @@ export default class {
         if(!page){
             var tp = window.App.tools.getQueryStr("tp");
             page = this.pages.Page1;
-            
+
             if(tp){
                 page = window.pages[tp];
             }
@@ -50,6 +54,7 @@ export default class {
             var $imgs = $html.find("img");
             for(var i=0;i<$imgs.length;i++){
                 var src = $imgs.eq(i).attr("src");
+                if(!src)continue;
                 // console.log(src);
                 if(src.length>2&&src.indexOf("data")!=0){
                     var newSrc = window.loader.get(src).getAttribute("src");
@@ -60,6 +65,9 @@ export default class {
 
             // $($html[0].outerHTML).insertBefore("#musicbtn")
             $("#page").append($html[0].outerHTML)
+            var data = new page.data();
+            ko.applyBindings(data, $("#" + page.id)[0]);
+            page.load(data);
             this.currentPage = page.id;
         }
         window.App.positional.drawElements(".cal");
