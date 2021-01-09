@@ -32,11 +32,11 @@ export default class {
         $("#" + page.id).fadeIn(200, function(){
 
         })
-        window.App.positional.drawElements(".cal");
+        
         var data = new page.data();
         ko.applyBindings(data, $("#" + page.id)[0]);
         page.load(data);
-
+        window.App.positional.drawElements(".cal");
         this.currentPage = page.id;
     }
     start(page){
@@ -72,6 +72,5 @@ export default class {
         }
         window.App.positional.drawElements(".cal");
         // $("#page").fadeIn(100, 'linear', ()=>{})
-        page.load();
     }
 }
