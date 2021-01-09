@@ -179,7 +179,7 @@ var resetMask = (needResize) => {
     }
 };
 resetMask();
-setInterval(resetMask, 100)
+// setInterval(resetMask, 100)
 setTimeout(function(){
     reset();
     resetMask(true);
