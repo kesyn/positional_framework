@@ -52,12 +52,12 @@ export default class {
         }
     }
     drawElement(element, containerSize){
-        var limitSize = {
-            width: $(".limit").width(),
-            height: $(".limit").height(),
-            top: $(".limit").offset().top,
-            left: $(".limit").offset().left
-        }
+        // var limitSize = {
+        //     width: $(".limit").width(),
+        //     height: $(".limit").height(),
+        //     top: $(".limit").offset().top,
+        //     left: $(".limit").offset().left
+        // }
         var scale = window.stageWidth/750;
         var style = $(element).attr("_style");
         if(style){
@@ -120,11 +120,11 @@ export default class {
             .replace(/fullWidth/g, "window.stageWidth/window.stageScale")
             .replace(/fullHeight/g, "window.stageHeight/window.stageScale");
             
-            if(!eval('(' + tmpStr + ')').out){
-                positionStr = positionStr.replace(/fullWidth/g, limitSize.width).replace(/fullHeight/g, limitSize.height)
-                .replace(/window\.fullWidth/g, limitSize.width).replace(/window\.fullHeight/g, limitSize.height)
-                out = false;
-            }
+            // if(!eval('(' + tmpStr + ')').out){
+            //     positionStr = positionStr.replace(/fullWidth/g, limitSize.width).replace(/fullHeight/g, limitSize.height)
+            //     .replace(/window\.fullWidth/g, limitSize.width).replace(/window\.fullHeight/g, limitSize.height)
+            //     out = false;
+            // }
             positionStr = positionStr
                 .replace(/window\.fullWidth/g, "window.stageWidth/window.stageScale")
                 .replace(/window\.fullHeight/g, "window.stageHeight/window.stageScale")
@@ -144,9 +144,9 @@ export default class {
         // console.log(!!$(element).attr("bottom"));
 
         var designSize = {width: window.stageWidth, height: window.stageHeight}
-        if(!out){
-            designSize = limitSize;
-        }
+        // if(!out){
+        //     designSize = limitSize;
+        // }
         if(containerSize){designSize = containerSize;}
         // console.log(scale)
         
@@ -217,12 +217,12 @@ export default class {
             console.log(offset.design);
             offset.height = designSize.height - offset.design[2]*scale - (offset.design[4]*scale - offset.design[3]*scale);
         }
-        if(!out){ 
-            offset.y += limitSize.top;
-            if(offset.bottom){
-                bottom = bottom + (window.stageHeight - limitSize.top - limitSize.height)
-            }
-        }
+        // if(!out){ 
+        //     offset.y += limitSize.top;
+        //     if(offset.bottom){
+        //         bottom = bottom + (window.stageHeight - limitSize.top - limitSize.height)
+        //     }
+        // }
         if(!offset.skip) {
             // alert("not skip")
             // console.log(src);
