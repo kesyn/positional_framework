@@ -12,7 +12,7 @@ window.weui = weui;
 require("es6-promise").polyfill();
 window.sounds = require('./sound').sounds;
 //
-// var VConsole = require('vconsole');
+var VConsole = require('vconsole');
 // var vConsole = new VConsole();
 
 var u = navigator.userAgent.toLowerCase();
@@ -103,7 +103,6 @@ window.App.tools = new Tools(window.App);
 window.App.animator = new Animator(window.App);
 window.os =(u.indexOf('Android') > -1 || u.indexOf('Linux') > -1)?"android":"ios";
 var reset = ()=>{
-    
     // return;
     // if(window.os=="ios")return document.getElementsByName('viewport')[0].setAttribute('content', 'width=750, user-scalable=no');
     // var get_target_densitydpi = 750 / document.documentElement.clientWidth * 160;
@@ -194,6 +193,12 @@ window.isqqnews = function () {
     }
     return isnews;
 };
+window.isdebug = function(){
+    return location.href.indexOf("debug")>=0;
+}
+if(window.isdebug()){
+    var vConsole = new VConsole();
+}
 window.isqq = function () {
     var isnews = false;
     var ua = window.navigator.userAgent.toLowerCase();
@@ -355,34 +360,6 @@ $("document").ready(function(){
     else{
         loadDone();
     }
-//     if(isAndroid||isiOS){
-//         $("body").append($(`<style>
-// .weui-dialog{
-//     width:600px;
-//     border-radius: 6px;
-// }
-//
-// .weui-dialog__bd{
-//     font-size: 30px!important;
-//     padding: 2.7em 40px 1.7em!important;
-// }
-// .weui-dialog__ft{
-//     line-height: 96px!important;
-//     font-size: 36px!important;
-// }
-// .weui-mask_transparent{
-//     background-color: rgba(0,0,0,0.5)
-// }
-// .weui-toast {
-//     width: 240px;
-//     height: 240px;
-//     top: 50%;
-// }
-// .weui-toast__content{
-// font-size: 28px;
-// }
-// </style>`))
-//     }
 
 });
 
